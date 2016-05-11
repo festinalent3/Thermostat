@@ -1,28 +1,49 @@
+'use strict';
+
 function Thermostat() {
-  this.temperature = 20;
+  this.DEFAULT_TEMP = 20;
+  this.MIN_TEMP = 10;
+  this.MAX_TEMP = 32;
+  this.MAX_TEMP_WITH_PSM = 25;
+  this.MEDIUM_USAGE_LIMIT = 18; 
+  this._temperature = this.DEFAULT_TEMP;
   this._powerSaving = true;
+}
+
+Thermostat.prototype.getTemperature = function() {
+  return this._temperature;
 }
 
 Thermostat.prototype.upButton = function(times) {
   for (var i = 1; i <= times; i++) {
-    if(this.isPowerSaving() && this.temperature === 25 ) {
-      throw new Error('turn off power saving mode to raise temp further');
+    if(this.isMaxTemp()) {
+      throw new Error(this.isPowerSaving() ?
+      'current max limit: 25 degrees' : 'maximum limit is 32 degrees');
     }
-    else if (this.temperature === 32 ) {
-      throw new Error('maximum limit is 32 degrees');
-    }
-    this.temperature += 1;
+    this._temperature += 1;
   }
 };
 
 Thermostat.prototype.downButton = function(times) {
   for (var i = 1; i <= times; i++) {
-    if(this.temperature === 10) {
+    if(this.isMinTemp()) {
       throw new Error('can not go lower than 10 degrees');
     }
-    this.temperature -= 1;
+    this._temperature -= 1;
   }
 };
+
+Thermostat.prototype.isMaxTemp = function () {
+  if(this.isPowerSaving()) {
+    return this.getTemperature() === this.MAX_TEMP_WITH_PSM;
+  }
+  return this.getTemperature() === this.MAX_TEMP;
+}
+
+
+Thermostat.prototype.isMinTemp = function() {
+  return this.getTemperature() === this.MIN_TEMP;
+}
 
 Thermostat.prototype.isPowerSaving = function() {
   return this._powerSaving;
@@ -33,17 +54,17 @@ Thermostat.prototype.setPowerMode = function(mode) {
 };
 
 Thermostat.prototype.reset = function () {
-  this.temperature = 20;
+  this._temperature = 20;
 }
 
 Thermostat.prototype.displayColor = function () {
-  if(this.temperature < 18 ) {
-    return 'green';
+  if(this._temperature < this.MEDIUM_USAGE_LIMIT ) {
+    return 'low-usage';
   }
-  else if(this.temperature < 25) {
-    return 'yellow';
+  else if(this._temperature < this.MAX_TEMP_WITH_PSM) {
+    return 'medium-usage';
   }
   else {
-    return 'red';
+    return 'high-usage';
   }
 }
