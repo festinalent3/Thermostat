@@ -5,7 +5,7 @@ function Thermostat() {
   this.MIN_TEMP = 10;
   this.MAX_TEMP = 32;
   this.MAX_TEMP_WITH_PSM = 25;
-  this.MEDIUM_USAGE_LIMIT = 18; 
+  this.MEDIUM_USAGE_LIMIT = 18;
   this._temperature = this.DEFAULT_TEMP;
   this._powerSaving = true;
 }
@@ -14,7 +14,7 @@ Thermostat.prototype.getTemperature = function() {
   return this._temperature;
 }
 
-Thermostat.prototype.upButton = function(times) {
+Thermostat.prototype.upButton = function(times = 1) {
   for (var i = 1; i <= times; i++) {
     if(this.isMaxTemp()) {
       throw new Error(this.isPowerSaving() ?
@@ -24,7 +24,7 @@ Thermostat.prototype.upButton = function(times) {
   }
 };
 
-Thermostat.prototype.downButton = function(times) {
+Thermostat.prototype.downButton = function(times = 1) {
   for (var i = 1; i <= times; i++) {
     if(this.isMinTemp()) {
       throw new Error('can not go lower than 10 degrees');
