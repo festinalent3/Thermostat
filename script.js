@@ -3,36 +3,36 @@ var thermostat = new Thermostat();
 $(document).ready(function() {
 
   $("#headline").text('Thermostat');
-  $('#temperature').text(thermostat.getTemperature());
+  updateTemp();
 
   $("#temperature-up").click(function(){
     thermostat.upButton();
-    $('#temperature').text(thermostat.getTemperature());
+    updateTemp();
   });
 
   $("#temperature-down").click(function(){
     thermostat.downButton();
-    $('#temperature').text(thermostat.getTemperature());
+    updateTemp();
   });
-
 
   $("#temperature-reset").click(function(){
     thermostat.reset();
-    $('#temperature').text(thermostat.getTemperature());
+    updateTemp();
   });
-
 
   $("#powersaving-on").click(function(){
     thermostat.setPowerMode('on');
     $('#power-saving-status').text('on')
-    $('#temperature').text(thermostat.getTemperature());
+    updateTemp();
   });
-
 
   $("#powersaving-off").click(function(){
     thermostat.setPowerMode('off');
     $('#power-saving-status').text('off')
-
   });
 
+  function updateTemp () {
+    $('#temperature').text(thermostat.getTemperature())
+      .attr('class', thermostat.displayColor());
+  }
 })
