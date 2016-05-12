@@ -31,6 +31,12 @@ $(document).ready(function() {
     $('#power-saving-status').text('off')
   });
 
+  $("#city-selector").submit(function(event){
+    var city = $("#city-input").val();
+    getCityTemperature (city);
+    event.preventDefault();
+  });
+
   function updateTemp () {
     $('#temperature').text(thermostat.getTemperature())
       .attr('class', thermostat.displayColor());
