@@ -1,6 +1,6 @@
-$(document).ready(function() {
+var thermostat = new Thermostat();
 
-  var thermostat = new Thermostat();
+$(document).ready(function() {
 
   $("#headline").text('Thermostat');
   $('#temperature').text(thermostat.getTemperature());
@@ -25,6 +25,7 @@ $(document).ready(function() {
   $("#powersaving-on").click(function(){
     thermostat.setPowerMode('on');
     $('#power-saving-status').text('on')
+    $('#temperature').text(thermostat.getTemperature());
   });
 
 

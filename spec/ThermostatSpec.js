@@ -45,6 +45,13 @@ describe('Thermostat', function() {
     expect(function() { thermostat.upButton(13); }).toThrowError('maximum limit is 32 degrees');
   });
 
+  it('automatically reduces temp to 25 if current temperature > 25 when switching on power mode', function(){
+    thermostat.setPowerMode('off');
+    thermostat.upButton(6);
+    thermostat.setPowerMode('on')
+    expect(thermostat.getTemperature()).toEqual(25);
+  });
+
   it('can be reset to default temperatur of 20 degrees', function() {
     thermostat.reset();
     expect(thermostat.getTemperature()).toEqual(startTemp)
