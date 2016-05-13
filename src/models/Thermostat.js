@@ -1,7 +1,7 @@
 'use strict';
 
-function Thermostat() {
-  this.DEFAULT_TEMP = 20;
+function Thermostat(temperature) {
+  this.DEFAULT_TEMP = temperature || 20;
   this.MIN_TEMP = 10;
   this.MAX_TEMP = 32;
   this.MAX_TEMP_WITH_PSM = 25;
@@ -22,6 +22,7 @@ Thermostat.prototype.upButton = function(times = 1) {
     }
     this._temperature += 1;
   }
+  apiSaveTemperature(this._temperature);
 };
 
 Thermostat.prototype.downButton = function(times = 1) {
@@ -31,6 +32,7 @@ Thermostat.prototype.downButton = function(times = 1) {
     }
     this._temperature -= 1;
   }
+  apiSaveTemperature(this._temperature);
 };
 
 Thermostat.prototype.isMaxTemp = function () {
@@ -54,6 +56,7 @@ Thermostat.prototype.setPowerMode = function(mode) {
   if(this._powerSaving && this._temperature > 25) {
     this._temperature = 25;
   }
+  apiSavePSM(mode);
 };
 
 Thermostat.prototype.reset = function () {

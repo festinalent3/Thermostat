@@ -18,7 +18,7 @@
       <button id="powersaving-on">PSM on</button>
       <button id="powersaving-off">PSM off</button>
     </p>
-    <h1>Current temperature: <span id=current-temperature></span></h1>
+    <h2>Current temperature in <span id=city></span>: <span id=current-temperature></span></h2>
 
     <form id='city-selector'>
       <input id="city-input" type="text">
@@ -26,6 +26,7 @@
     </form>
   </section>
   <script src="lib/jquery.js"></script>
+  <script src="src/models/API.js"></script>
   <script src="src/models/Thermostat.js"></script>
   <script src="src/key.js"></script>
   <script src="src/weather.js"></script>

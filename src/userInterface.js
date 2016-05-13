@@ -1,44 +1,65 @@
-var thermostat = new Thermostat();
+var thermostat;
+var city;
 
 $(document).ready(function() {
 
   $("#headline").text('Thermostat');
-  updateTemp();
+  // get state from api
+  $.get( "http://localhost:4567/state", function(data) {
+    console.log(data);
+
+    // set state
+    thermostat = new Thermostat(data.temperature);
+    thermostat.setPowerMode(data.PSM);
+    city = data.city;
+    getCityTemperature (city);
+
+    // then update UI:
+    updateUI();
+  });
 
   $("#temperature-up").click(function(){
     thermostat.upButton();
-    updateTemp();
+    updateUI();
   });
 
   $("#temperature-down").click(function(){
     thermostat.downButton();
-    updateTemp();
+    updateUI();
   });
 
   $("#temperature-reset").click(function(){
     thermostat.reset();
-    updateTemp();
+    updateUI();
   });
 
   $("#powersaving-on").click(function(){
     thermostat.setPowerMode('on');
-    $('#power-saving-status').text('on')
-    updateTemp();
+    updateUI();
   });
 
   $("#powersaving-off").click(function(){
     thermostat.setPowerMode('off');
-    $('#power-saving-status').text('off')
   });
 
   $("#city-selector").submit(function(event){
-    var city = $("#city-input").val();
+    city = $("#city-input").val();
     getCityTemperature (city);
+    apiSaveCity(city);
     event.preventDefault();
   });
 
-  function updateTemp () {
-    $('#temperature').text(thermostat.getTemperature())
+  function updateUI () {
+    if (thermostat.isPowerSaving()) {
+      $('#power-saving-status').text('on')
+    } else {
+      $('#power-saving-status').text('off')
+    }
+
+    $('#temperature')
+      .text(thermostat.getTemperature())
       .attr('class', thermostat.displayColor());
+
+    $('#city').text(city);  
   }
-})
+});

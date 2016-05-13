@@ -6,7 +6,6 @@ describe('Thermostat', function() {
   beforeEach(function(){
     thermostat = new Thermostat();
     startTemp = thermostat.getTemperature();
-
   });
 
   it('has a default temperature of 20 degrees', function() {
